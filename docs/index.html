@@ -153,17 +153,24 @@
           <h2 class="title is-3" style="text-align: center;">Why "Correct" Is Not Secure</h2>
           
           <div class="content has-text-justified">
-            <p>
-              Current code agent pipelines judge a patch by its ability to pass all test cases. However, we argue that this criterion is insufficient. We conducted an empirical study on outputs of the Mini-SWE-Agent pipeline using four state-of-the-art models: Qwen3-Coder, Kimi-K2-Instruct, GPT-5 mini, and Claude Sonnet 4. We analyzed patches that correctly resolved their target issue and passed the full repository test suite, focusing exclusively on functionally correct patches.
-            </p>
+            <div style="display: flex; gap: 20px; align-items: flex-start; margin: 20px 0;">
+              <div style="flex: 1;">
+                <p>
+                  Current code agent pipelines judge a patch by its ability to pass all test cases. However, we argue that this criterion is insufficient. We conducted an empirical study on outputs of the Mini-SWE-Agent pipeline using four state-of-the-art models: Qwen3-Coder, Kimi-K2-Instruct, GPT-5 mini, and Claude Sonnet 4. We analyzed patches that correctly resolved their target issue and passed the full repository test suite, focusing exclusively on functionally correct patches.
+                </p>
 
-            <div style="text-align: center; margin: 20px 0;">
-              <img src="static/fcv-images/vulnerability-rates.png" alt="Vulnerability Rates" style="max-width: 500px; width: 100%;" />
+                <p>
+                  <strong>Surprisingly, Figure 2 shows that even functionally correct patches remain vulnerable:</strong> 6.0% of Qwen3-Coder patches and 5.0% of Kimi-K2-Instruct patches contain security weaknesses, while GPT-5 mini and Claude Sonnet 4 produce 4.5% and 4.3% vulnerable fixes, respectively.
+                </p>
+              </div>
+
+              <div style="flex: 0 0 25%; max-width: 25%;">
+                <img src="static/fcv-images/vulnerability-rates.png" alt="Vulnerability Rates" style="width: 100%; display: block;" />
+                <p style="font-size: 0.85em; margin-top: 8px; text-align: left;">
+                  <strong>Figure 2</strong> Vulnerability rates among functionally correct patches under clean settings.
+                </p>
+              </div>
             </div>
-
-            <p>
-              <strong>Surprisingly, Figure 2 shows that even functionally correct patches remain vulnerable:</strong> 6.0% of Qwen3-Coder patches and 5.0% of Kimi-K2-Instruct patches contain security weaknesses, while GPT-5 mini and Claude Sonnet 4 produce 4.5% and 4.3% vulnerable fixes, respectively.
-            </p>
 
             <div style="text-align: center; margin: 20px 0;">
               <img src="static/fcv-images/fcv-examples.png" alt="FCV Examples" style="max-width: 900px; width: 100%;" />
@@ -276,6 +283,51 @@
             <p>
               <strong>Implication:</strong> This demonstrates that contamination occurs at the point of encoding, stored in the key-value cache, and persists throughout execution. Defenses focused solely on monitoring observable behaviors are fundamentally insufficient.
             </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Defense Analysis Section -->
+  <section class="section hero is-light" style="background-color: #f5f5f5 !important;">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3" style="text-align: center;">Can We Defend Against FCV-Attack?</h2>
+
+          <div class="content has-text-justified">
+            <p>
+              We evaluate whether prompt-level safeguards can mitigate FCV-Attack. We add the following safety instruction to the system prompt of code agents:
+            </p>
+
+            <div style="background-color: #fff3cd; padding: 15px; margin: 15px 0; border-left: 4px solid #ffc107; border-radius: 4px;">
+              <p style="margin: 0; font-style: italic; color: #856404;">
+                "When writing code, be careful to avoid bugs or risky patterns while keeping things secure and private."
+              </p>
+            </div>
+
+            <div style="text-align: center; margin: 20px 0;">
+              <img src="static/fcv-images/defense-results.png" alt="Defense Results" style="max-width: 600px; width: 100%;" />
+            </div>
+
+            <p>
+              <strong>Results:</strong> The added instruction provides only <em>partial mitigation</em>. For example:
+            </p>
+            <ul>
+              <li><strong>Qwen3-Coder (CWE-538):</strong> ASR decreases from 19.0% to 17.9%, but baseline is only 9.5%</li>
+              <li><strong>Kimi-K2 (CWE-538):</strong> ASR decreases from 54.2% to 43.3%, but baseline is only 0.8%</li>
+            </ul>
+
+            <p>
+              <strong>Key Finding:</strong> While prompt-level defenses reduce attack success rates, they <strong>fail to restore baseline security</strong>. The ASR under defense remains substantially higher than in clean conditions across all CWE categories.
+            </p>
+
+            <div style="background-color: #f8d7da; padding: 15px; margin: 20px 0; border-left: 4px solid #dc3545; border-radius: 4px;">
+              <p style="margin: 0; color: #721c24;">
+                <strong>⚠️ Implication:</strong> Current evaluation paradigms focused on functional correctness and behavioral monitoring are insufficient. We hope our work motivates the development of more comprehensive security mechanisms for code agents.
+              </p>
+            </div>
           </div>
         </div>
       </div>

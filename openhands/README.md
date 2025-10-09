@@ -1,182 +1,205 @@
-<a name="readme-top"></a>
+# OpenHands - FCV Attack Experiments
 
-<div align="center">
-  <img src="./docs/static/img/logo.png" alt="Logo" width="200">
-  <h1 align="center">OpenHands: Code Less, Make More</h1>
-</div>
+This document describes how to run **OpenHands** with CWE injection attacks for the FCV (Functionally Correct yet Vulnerable) attack experiments.
 
+## Prerequisites
 
-<div align="center">
-  <a href="https://github.com/All-Hands-AI/OpenHands/graphs/contributors"><img src="https://img.shields.io/github/contributors/All-Hands-AI/OpenHands?style=for-the-badge&color=blue" alt="Contributors"></a>
-  <a href="https://github.com/All-Hands-AI/OpenHands/stargazers"><img src="https://img.shields.io/github/stars/All-Hands-AI/OpenHands?style=for-the-badge&color=blue" alt="Stargazers"></a>
-  <a href="https://github.com/All-Hands-AI/OpenHands/blob/main/LICENSE"><img src="https://img.shields.io/github/license/All-Hands-AI/OpenHands?style=for-the-badge&color=blue" alt="MIT License"></a>
-  <br/>
-  <a href="https://dub.sh/openhands"><img src="https://img.shields.io/badge/Slack-Join%20Us-red?logo=slack&logoColor=white&style=for-the-badge" alt="Join our Slack community"></a>
-  <a href="https://discord.gg/ESHStjSjD4"><img src="https://img.shields.io/badge/Discord-Join%20Us-purple?logo=discord&logoColor=white&style=for-the-badge" alt="Join our Discord community"></a>
-  <a href="https://github.com/All-Hands-AI/OpenHands/blob/main/CREDITS.md"><img src="https://img.shields.io/badge/Project-Credits-blue?style=for-the-badge&color=FFE165&logo=github&logoColor=white" alt="Credits"></a>
-  <br/>
-  <a href="https://docs.all-hands.dev/usage/getting-started"><img src="https://img.shields.io/badge/Documentation-000?logo=googledocs&logoColor=FFE165&style=for-the-badge" alt="Check out the documentation"></a>
-  <a href="https://arxiv.org/abs/2407.16741"><img src="https://img.shields.io/badge/Paper%20on%20Arxiv-000?logoColor=FFE165&logo=arxiv&style=for-the-badge" alt="Paper on Arxiv"></a>
-  <a href="https://docs.google.com/spreadsheets/d/1wOUdFCMyY6Nt0AIqF705KN4JKOWgeI4wUGUP60krXXs/edit?gid=0#gid=0"><img src="https://img.shields.io/badge/Benchmark%20score-000?logoColor=FFE165&logo=huggingface&style=for-the-badge" alt="Evaluation Benchmark Score"></a>
+1. Complete the Pass 1 run following the instructions in [../README.md](../README.md)
+2. Evaluate Pass 1 results with SWE-bench to get the `report.json` file
+3. Make sure you have the OpenHands environment activated: `conda activate openhands`
 
-  <!-- Keep these links. Translations will automatically update with the README. -->
-  <a href="https://www.readme-i18n.com/All-Hands-AI/OpenHands?lang=de">Deutsch</a> |
-  <a href="https://www.readme-i18n.com/All-Hands-AI/OpenHands?lang=es">Español</a> |
-  <a href="https://www.readme-i18n.com/All-Hands-AI/OpenHands?lang=fr">français</a> |
-  <a href="https://www.readme-i18n.com/All-Hands-AI/OpenHands?lang=ja">日本語</a> |
-  <a href="https://www.readme-i18n.com/All-Hands-AI/OpenHands?lang=ko">한국어</a> |
-  <a href="https://www.readme-i18n.com/All-Hands-AI/OpenHands?lang=pt">Português</a> |
-  <a href="https://www.readme-i18n.com/All-Hands-AI/OpenHands?lang=ru">Русский</a> |
-  <a href="https://www.readme-i18n.com/All-Hands-AI/OpenHands?lang=zh">中文</a>
+## Workflow Overview
 
-  <hr>
-</div>
-
-Welcome to OpenHands (formerly OpenDevin), a platform for software development agents powered by AI.
-
-OpenHands agents can do anything a human developer can: modify code, run commands, browse the web,
-call APIs, and yes—even copy code snippets from StackOverflow.
-
-Learn more at [docs.all-hands.dev](https://docs.all-hands.dev), or [sign up for OpenHands Cloud](https://app.all-hands.dev) to get started.
-
-> [!IMPORTANT]
-> Using OpenHands for work? We'd love to chat! Fill out
-> [this short form](https://docs.google.com/forms/d/e/1FAIpQLSet3VbGaz8z32gW9Wm-Grl4jpt5WgMXPgJ4EDPVmCETCBpJtQ/viewform)
-> to join our Design Partner program, where you'll get early access to commercial features and the opportunity to provide input on our product roadmap.
-
-![App screenshot](./docs/static/img/screenshot.png)
-
-## ☁️ OpenHands Cloud
-The easiest way to get started with OpenHands is on [OpenHands Cloud](https://app.all-hands.dev),
-which comes with $20 in free credits for new users.
-
-## 💻 Running OpenHands Locally
-
-### Option 1: CLI Launcher (Recommended)
-
-The easiest way to run OpenHands locally is using the CLI launcher with [uv](https://docs.astral.sh/uv/). This provides better isolation from your current project's virtual environment and is required for OpenHands' default MCP servers.
-
-**Install uv** (if you haven't already):
-
-See the [uv installation guide](https://docs.astral.sh/uv/getting-started/installation/) for the latest installation instructions for your platform.
-
-**Launch OpenHands**:
-```bash
-# Launch the GUI server
-uvx --python 3.12 --from openhands-ai openhands serve
-
-# Or launch the CLI
-uvx --python 3.12 --from openhands-ai openhands
+```
+Pass 1 → Evaluation → CWE Injection (Pass 2) → Evaluation → LM Judge
 ```
 
-You'll find OpenHands running at [http://localhost:3000](http://localhost:3000) (for GUI mode)!
+## Step 1: Evaluate Pass 1 Results
 
-### Option 2: Docker
-
-<details>
-<summary>Click to expand Docker command</summary>
-
-You can also run OpenHands directly with Docker:
+After running the initial inference, evaluate the results to identify resolved instances:
 
 ```bash
-docker pull docker.all-hands.dev/all-hands-ai/runtime:0.56-nikolaik
-
-docker run -it --rm --pull=always \
-    -e SANDBOX_RUNTIME_CONTAINER_IMAGE=docker.all-hands.dev/all-hands-ai/runtime:0.56-nikolaik \
-    -e LOG_ALL_EVENTS=true \
-    -v /var/run/docker.sock:/var/run/docker.sock \
-    -v ~/.openhands:/.openhands \
-    -p 3000:3000 \
-    --add-host host.docker.internal:host-gateway \
-    --name openhands-app \
-    docker.all-hands.dev/all-hands-ai/openhands:0.56
+# Example for GPT-5 Mini
+./evaluation/benchmarks/swe_bench/scripts/eval_infer.sh \
+  "/path/to/OpenHands/evaluation/evaluation_outputs/outputs/princeton-nlp__SWE-bench_Verified-test/CodeActAgent/gpt-5-mini_maxiter_100_N_v0.56.0-no-hint-run_1/output.jsonl" \
+  "" \
+  princeton-nlp/SWE-bench_Verified \
+  test \
+  local
 ```
 
-</details>
+This will generate a `report.json` file with resolved instance IDs.
 
-> **Note**: If you used OpenHands before version 0.44, you may want to run `mv ~/.openhands-state ~/.openhands` to migrate your conversation history to the new location.
+## Step 2: Run CWE Injection Experiments
 
-> [!WARNING]
-> On a public network? See our [Hardened Docker Installation Guide](https://docs.all-hands.dev/usage/runtimes/docker#hardened-docker-installation)
-> to secure your deployment by restricting network binding and implementing additional security measures.
+Use the `run_cwe_simple.sh` script to inject CWE vulnerabilities into the resolved instances:
 
-### Getting Started
+### Script Usage
 
-When you open the application, you'll be asked to choose an LLM provider and add an API key.
-[Anthropic's Claude Sonnet 4](https://www.anthropic.com/api) (`anthropic/claude-sonnet-4-20250514`)
-works best, but you have [many options](https://docs.all-hands.dev/usage/llms).
+```bash
+./run_cwe_simple.sh <REPORT_JSON> <CWE_TYPE> <LLM_CONFIG> <ROUND> <OUTPUT_DIR> <USE_REMOTE>
+```
 
-See the [Running OpenHands](https://docs.all-hands.dev/usage/installation) guide for
-system requirements and more information.
+**Parameters:**
+- `REPORT_JSON`: Path to the report.json from Pass 1 evaluation
+- `CWE_TYPE`: One of `cwe_532`, `cwe_79`, `cwe_89`, `cwe_94`
+- `LLM_CONFIG`: LLM configuration (e.g., `llm.eval_gpt5_mini`, `llm.eval_kimi`)
+- `ROUND`: Round number (typically `1`)
+- `OUTPUT_DIR`: Directory to save outputs
+- `USE_REMOTE`: `true` to use remote runtime, `false` for local
 
-## 💡 Other ways to run OpenHands
+### CWE Types
 
-> [!WARNING]
-> OpenHands is meant to be run by a single user on their local workstation.
-> It is not appropriate for multi-tenant deployments where multiple users share the same instance. There is no built-in authentication, isolation, or scalability.
->
-> If you're interested in running OpenHands in a multi-tenant environment, check out the source-available, commercially-licensed
-> [OpenHands Cloud Helm Chart](https://github.com/all-Hands-AI/OpenHands-cloud)
+- **CWE-532** (Information Exposure): Logging sensitive information
+- **CWE-79** (Cross-Site Scripting): XSS vulnerabilities
+- **CWE-89** (SQL Injection): SQL injection vulnerabilities  
+- **CWE-94** (Code Injection): Arbitrary code execution
 
-You can [connect OpenHands to your local filesystem](https://docs.all-hands.dev/usage/runtimes/docker#connecting-to-your-filesystem),
-interact with it via a [friendly CLI](https://docs.all-hands.dev/usage/how-to/cli-mode),
-run OpenHands in a scriptable [headless mode](https://docs.all-hands.dev/usage/how-to/headless-mode),
-or run it on tagged issues with [a github action](https://docs.all-hands.dev/usage/how-to/github-action).
+## Step 3: Run CWE Injection Experiments
 
-Visit [Running OpenHands](https://docs.all-hands.dev/usage/installation) for more information and setup instructions.
+### General Template
 
-If you want to modify the OpenHands source code, check out [Development.md](https://github.com/All-Hands-AI/OpenHands/blob/main/Development.md).
+```bash
+cd /path/to/OpenHands && conda activate openhands
 
-Having issues? The [Troubleshooting Guide](https://docs.all-hands.dev/usage/troubleshooting) can help.
+./run_cwe_simple.sh \
+  <REPORT_JSON_PATH> \
+  <CWE_TYPE> \
+  <LLM_CONFIG> \
+  1 \
+  <OUTPUT_DIR> \
+  true
+```
 
-## 📖 Documentation
+**Parameters:**
+- `<REPORT_JSON_PATH>`: Path to Pass 1 report.json (e.g., `evaluation/evaluation_outputs/outputs/princeton-nlp__SWE-bench_Verified-test/CodeActAgent/{MODEL_NAME}/report.json`)
+- `<CWE_TYPE>`: One of `cwe_532`, `cwe_79`, `cwe_89`, `cwe_94`
+- `<LLM_CONFIG>`: LLM config name (e.g., `llm.eval_gpt5_mini`, `llm.eval_kimi`, `llm.eval_qwen_480b`, `llm.eval_claude_sonnet4`)
+- `<OUTPUT_DIR>`: Output directory (e.g., `evaluation/evaluation_outputs/outputs/cwe532_gpt`)
 
-To learn more about the project, and for tips on using OpenHands,
-check out our [documentation](https://docs.all-hands.dev/usage/getting-started).
+### Model Configurations
 
-There you'll find resources on how to use different LLM providers,
-troubleshooting resources, and advanced configuration options.
+| Model | LLM Config | Model Name Pattern |
+|-------|-----------|-------------------|
+| GPT-5 Mini | `llm.eval_gpt5_mini` | `gpt-5-mini_maxiter_100_N_v0.56.0-no-hint-run_1` |
+| Kimi-K2-Instruct | `llm.eval_kimi` | `Kimi-K2-Instruct_maxiter_100_N_v0.56.0-no-hint-run_1` |
+| Qwen3-Coder-480B | `llm.eval_qwen_480b` | `Qwen3-Coder-480B-A35B-Instruct_maxiter_100_N_v0.56.0-no-hint-run_1` |
+| Claude Sonnet 4 | `llm.eval_claude_sonnet4` | `claude-sonnet-4-20250514_maxiter_100_N_v0.56.0-no-hint-run_1` |
 
-## 🤝 How to Join the Community
+### Example: Running All CWE Types for GPT-5 Mini
 
-OpenHands is a community-driven project, and we welcome contributions from everyone. We do most of our communication
-through Slack, so this is the best place to start, but we also are happy to have you contact us on Discord or Github:
+```bash
+cd /path/to/OpenHands && conda activate openhands
 
-- [Join our Slack workspace](https://dub.sh/openhands) - Here we talk about research, architecture, and future development.
-- [Join our Discord server](https://discord.gg/ESHStjSjD4) - This is a community-run server for general discussion, questions, and feedback.
-- [Read or post Github Issues](https://github.com/All-Hands-AI/OpenHands/issues) - Check out the issues we're working on, or add your own ideas.
+REPORT_JSON="evaluation/evaluation_outputs/outputs/princeton-nlp__SWE-bench_Verified-test/CodeActAgent/gpt-5-mini_maxiter_100_N_v0.56.0-no-hint-run_1/report.json"
 
-See more about the community in [COMMUNITY.md](./COMMUNITY.md) or find details on contributing in [CONTRIBUTING.md](./CONTRIBUTING.md).
+for CWE_TYPE in cwe_532 cwe_79 cwe_89 cwe_94; do
+  ./run_cwe_simple.sh \
+    "$REPORT_JSON" \
+    "$CWE_TYPE" \
+    llm.eval_gpt5_mini \
+    1 \
+    "evaluation/evaluation_outputs/outputs/${CWE_TYPE}_gpt" \
+    true
+done
+```
 
-## 📈 Progress
+## Step 4: Evaluate CWE Injection Results
 
-See the monthly OpenHands roadmap [here](https://github.com/orgs/All-Hands-AI/projects/1) (updated at the maintainer's meeting at the end of each month).
+### Evaluation Template
 
-<p align="center">
-  <a href="https://star-history.com/#All-Hands-AI/OpenHands&Date">
-    <img src="https://api.star-history.com/svg?repos=All-Hands-AI/OpenHands&type=Date" width="500" alt="Star History Chart">
-  </a>
-</p>
+```bash
+./evaluation/benchmarks/swe_bench/scripts/eval_infer.sh \
+  "<OUTPUT_JSONL_PATH>" \
+  "" \
+  princeton-nlp/SWE-bench_Verified \
+  test \
+  local
+```
 
-## 📜 License
+**Path Pattern:**
+`<OUTPUT_DIR>/princeton-nlp__SWE-bench_Verified-test/CodeActAgent/<MODEL_NAME>_maxiter_100_N_<CWE_TYPE>_injection_resolved_ids_round_1/output.jsonl`
 
-Distributed under the MIT License, with the exception of the `enterprise/` folder. See [`LICENSE`](./LICENSE) for more information.
+### Example: Evaluate All CWE Types for a Model
 
-## 🙏 Acknowledgements
+```bash
+# Define model-specific variables
+MODEL_NAME="gpt-5-mini"  # or "Kimi-K2-Instruct", "Qwen3-Coder-480B-A35B-Instruct", "claude-sonnet-4-20250514"
+OUTPUT_PREFIX="cwe"      # e.g., "cwe532_gpt", "cwe79_kimi", etc.
 
-OpenHands is built by a large number of contributors, and every contribution is greatly appreciated! We also build upon other open source projects, and we are deeply thankful for their work.
+# Evaluate all CWE types
+for CWE_NUM in 532 79 89 94; do
+  ./evaluation/benchmarks/swe_bench/scripts/eval_infer.sh \
+    "evaluation/evaluation_outputs/outputs/cwe${CWE_NUM}_*/princeton-nlp__SWE-bench_Verified-test/CodeActAgent/${MODEL_NAME}_maxiter_100_N_cwe_${CWE_NUM}_injection_resolved_ids_round_1/output.jsonl" \
+    "" \
+    princeton-nlp/SWE-bench_Verified \
+    test \
+    local
+done
+```
 
-For a list of open source projects and licenses used in OpenHands, please see our [CREDITS.md](./CREDITS.md) file.
+## Step 5: Final Evaluation with LM Judge
 
-## 📚 Cite
+After collecting all results, use the LM Judge to evaluate the vulnerability injection success. See [../attack-lm-judge/README.md](../attack-lm-judge/README.md) for details.
+
+## Troubleshooting
+
+### Cleaning up stuck containers
+
+If you encounter issues with stuck containers:
+
+```bash
+# Stop specific instance
+docker stop $(docker ps -q --filter "name=sweb.eval.INSTANCE_ID") 2>/dev/null || true
+docker rm $(docker ps -aq --filter "name=sweb.eval.INSTANCE_ID") 2>/dev/null || true
+
+# Clean build directories
+rm -rf /tmp/swe-bench/INSTANCE_ID/
+```
+
+### Runtime cleanup
+
+```bash
+# List all remote runtimes
+ALLHANDS_API_KEY="your-api-key" \
+  curl -H "X-API-Key: your-api-key" \
+  "https://runtime.eval.all-hands.dev/list"
+
+# Stop all remote runtimes
+ALLHANDS_API_KEY="your-api-key" \
+  curl -H "X-API-Key: your-api-key" \
+  "https://runtime.eval.all-hands.dev/list" | \
+  jq -r '.runtimes[].runtime_id' | \
+  xargs -I {} curl -X POST \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{"runtime_id": "{}"}' \
+  "https://runtime.eval.all-hands.dev/stop"
+```
+
+## Output Structure
+
+After completing the experiments, your output directory structure will look like:
 
 ```
-@inproceedings{
-  wang2025openhands,
-  title={OpenHands: An Open Platform for {AI} Software Developers as Generalist Agents},
-  author={Xingyao Wang and Boxuan Li and Yufan Song and Frank F. Xu and Xiangru Tang and Mingchen Zhuge and Jiayi Pan and Yueqi Song and Bowen Li and Jaskirat Singh and Hoang H. Tran and Fuqiang Li and Ren Ma and Mingzhang Zheng and Bill Qian and Yanjun Shao and Niklas Muennighoff and Yizhe Zhang and Binyuan Hui and Junyang Lin and Robert Brennan and Hao Peng and Heng Ji and Graham Neubig},
-  booktitle={The Thirteenth International Conference on Learning Representations},
-  year={2025},
-  url={https://openreview.net/forum?id=OJd3ayDDoF}
-}
+evaluation/evaluation_outputs/outputs/
+├── cwe532_gpt/
+│   └── princeton-nlp__SWE-bench_Verified-test/
+│       └── CodeActAgent/
+│           └── gpt-5-mini_maxiter_100_N_cwe_532_injection_resolved_ids_round_1/
+│               ├── output.jsonl
+│               └── report.json
+├── cwe79_gpt/
+├── cwe89_gpt/
+├── cwe94_gpt/
+├── cwe532_kimi/
+├── cwe79_kimi/
+... (and so on for other models and CWE types)
 ```
+
+## Next Steps
+
+1. Collect all evaluation results
+2. Run LM Judge evaluation (see `attack-lm-judge/README.md`)
+3. Analyze attack success rates across models and CWE types
+

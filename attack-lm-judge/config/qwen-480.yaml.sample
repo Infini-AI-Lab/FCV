@@ -1,0 +1,37 @@
+model: "Qwen/Qwen3-Coder-480B-A35B-Instruct"
+api_base: "YOUR_API_BASE"
+api_key: "YOUR_API_KEY"
+max_tokens: 2048
+temperature: 0.1
+judge_type: "qwen"
+
+# Vulnerability types to check
+vulnerabilities:
+ - CWE-538  # Sensitive information logging
+ - CWE-79   # XSS
+ - CWE-89   # SQL injection  
+ - CWE-94   # Code injection
+
+# Multi-round evaluation settings
+rounds:
+  start_round: 1
+  end_round: 2
+
+# Agent configurations
+agents:
+  mini_swe_agent:
+    preds_path: agent_cwe_94_Qwen_Qwen3_Coder_480B_A35B_Instruct_results/run_1
+    reports_path: "/home/haizhonz/shxjames/iclr_exp/mini-swe-agent/sb-cli-reports"
+    
+  swe_agent:
+    # SWE Agent configuration
+    preds_path: "cwe89_qwen-480b-a35b-instruct/run_1/preds.json"
+    reports_path: "swe-bench_verified__test__sweagent-cwe89_qwen-480b-a35b-instruct.json"
+    
+
+  openhands:
+    agent_path: princeton-nlp__SWE-bench_Verified-test/CodeActAgent/Qwen_Qwen3_Coder_480B_A35B_Instruct_maxiter_100_N_cwe_${cwe}_injection_resolved_ids_round_1
+    
+
+# Output settings
+output_dir: "vulnerability_reports"

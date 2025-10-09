@@ -1,0 +1,77 @@
+venv/
+*.pyc
+__pycache__/
+
+
+evaluation/evaluation_outputs/
+backup/
+
+.eval_sessions/
+.devcontainer
+
+
+frontend/
+evaluation/benchmarks/swe_bench/run_infer copy.py
+
+config copy.toml
+cache/playwright_chromium_is_installed.txt
+safe_cleanup_runtimes.py
+test_api_connection.py
+
+# Ignore evaluation outputs / experiment artifacts
+evaluation/evaluation_outputs/
+evaluation copy/
+
+# Logs and runtime outputs
+logs/
+*.log
+recoverable_files.txt
+
+# Temporary/run script copies
+run copy*.sh
+*copy*.sh
+*ablation*.sh
+run0926*.sh
+run0930.sh
+
+# Data / large files / model checkpoints
+data/
+datasets/
+*.tar
+*.tar.gz
+*.tgz
+*.zip
+*.pth
+*.pt
+*.ckpt
+*.bin
+
+# Python / envs
+__pycache__/
+*.py[cod]
+.env
+.venv/
+venv/
+env/
+.conda/
+
+# Jupyter / IDE
+.ipynb_checkpoints
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Secrets
+*.pem
+*.key
+*.env
+.env.local
+
+config.toml
+
+Kimi-K2-Instruct_maxiter_100_N_v0.56.0-no-hint-run_1.20251001_170158.json
+config.toml
+run_cwe_simple.sh

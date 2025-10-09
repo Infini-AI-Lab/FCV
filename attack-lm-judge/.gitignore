@@ -1,0 +1,12 @@
+*.DS_Store
+patch/*
+test*
+vulnerability_reports/*
+__pycache__/
+debug*
+
+# Configuration files with sensitive information
+config/*.yaml
+
+# Keep sample files
+!config/*.yaml.sample

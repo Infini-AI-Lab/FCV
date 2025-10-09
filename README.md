@@ -96,9 +96,98 @@ sweagent run-batch \
     --num_workers 16
 ```
 
-#### Openhands
+#### OpenHands
+
+**Step 1: Clean up any existing runtime containers**
 ```bash
+cd /path/to/OpenHands  # Replace with your OpenHands directory
+conda activate openhands
+
+# List and stop all remote runtimes (if using remote runtime)
+ALLHANDS_API_KEY="your-api-key" \
+  curl -H "X-API-Key: your-api-key" \
+  "https://runtime.eval.all-hands.dev/list" | \
+  jq -r '.runtimes[].runtime_id' | \
+  xargs -I {} curl -X POST \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{"runtime_id": "{}"}' \
+  "https://runtime.eval.all-hands.dev/stop"
+
+# Run cleanup script
+ALLHANDS_API_KEY="your-api-key" ./evaluation/utils/scripts/cleanup_remote_runtime.sh
 ```
+
+**Step 2: Run inference on SWE-bench Verified (Pass 1)**
+
+Choose your model and run:
+
+```bash
+# GPT-5 Mini
+cd /path/to/OpenHands && conda activate openhands
+ALLHANDS_API_KEY="your-api-key" \
+RUNTIME=remote \
+SANDBOX_REMOTE_RUNTIME_API_URL="https://runtime.eval.all-hands.dev" \
+./evaluation/benchmarks/swe_bench/scripts/run_infer.sh \
+  llm.eval_gpt5_mini \
+  HEAD \
+  CodeActAgent \
+  100 \
+  100 \
+  16 \
+  princeton-nlp/SWE-bench_Verified \
+  test
+
+# Claude Sonnet 4
+cd /path/to/OpenHands && conda activate openhands
+ALLHANDS_API_KEY="your-api-key" \
+RUNTIME=remote \
+SANDBOX_REMOTE_RUNTIME_API_URL="https://runtime.eval.all-hands.dev" \
+./evaluation/benchmarks/swe_bench/scripts/run_infer.sh \
+  llm.eval_claude_sonnet4 \
+  HEAD \
+  CodeActAgent \
+  100 \
+  100 \
+  16 \
+  princeton-nlp/SWE-bench_Verified \
+  test
+
+# Kimi-K2-Instruct
+cd /path/to/OpenHands && conda activate openhands
+ALLHANDS_API_KEY="your-api-key" \
+RUNTIME=remote \
+SANDBOX_REMOTE_RUNTIME_API_URL="https://runtime.eval.all-hands.dev" \
+./evaluation/benchmarks/swe_bench/scripts/run_infer.sh \
+  llm.eval_kimi \
+  HEAD \
+  CodeActAgent \
+  200 \
+  100 \
+  16 \
+  princeton-nlp/SWE-bench_Verified \
+  test
+
+# Qwen3-Coder-480B
+cd /path/to/OpenHands && conda activate openhands
+ALLHANDS_API_KEY="your-api-key" \
+RUNTIME=remote \
+SANDBOX_REMOTE_RUNTIME_API_URL="https://runtime.eval.all-hands.dev" \
+./evaluation/benchmarks/swe_bench/scripts/run_infer.sh \
+  llm.eval_qwen_480b \
+  HEAD \
+  CodeActAgent \
+  200 \
+  100 \
+  16 \
+  princeton-nlp/SWE-bench_Verified \
+  test
+```
+
+**Output**: Results will be saved in `evaluation/evaluation_outputs/outputs/princeton-nlp__SWE-bench_Verified-test/CodeActAgent/{MODEL_NAME}/output.jsonl`
+
+For more details on subsequent runs with CWE injection, see [openhands/README.md](openhands/README.md).
+
 ### 3. Evaluation: SWE-Bench
 
 After the first round, you will need to evaluate the results. You can either use the official [SWE-Bench](https://github.com/SWE-bench/SWE-bench) github repo and run the evaluation locally, or use their ```sb-cli``` cloud evaluation. We refer to the official documentation.

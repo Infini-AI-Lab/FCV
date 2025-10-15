@@ -29,7 +29,7 @@ Code agents are increasingly trusted to autonomously fix bugs on platforms such 
 
 <!-- ---------- -->
 <p align="center">
-  <img src="/Users/pengbobo/FCV/docs/static/fcv-images/figure1.png" alt="ASR across Agent/Model/CWE" style="width:100%;"/>
+  <img src="docs/static/fcv-images/figure1.png" alt="ASR across Agent/Model/CWE" style="width:100%;"/>
 </p>
 
 <p align="center"><i>

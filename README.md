@@ -29,13 +29,11 @@ Code agents are increasingly trusted to autonomously fix bugs on platforms such 
 
 <!-- ---------- -->
 <p align="center">
-  <img src="assets/cwe_injection_pipeline.png" alt="ASR across Agent/Model/CWE" style="width:100%;"/>
+  <img src="/Users/pengbobo/FCV/docs/static/fcv-images/figure1.png" alt="ASR across Agent/Model/CWE" style="width:100%;"/>
 </p>
 
 <p align="center"><i>
-<strong>Figure 1</strong> CWE-style injection attack on code agents. 
-By embedding malicious instructions in issue descriptions, attackers can induce agents to generate test-passing patches that nevertheless embed exploitable vulnerabilities (e.g., CWE-94). 
-This illustrates how functionally correct yet vulnerable (FCV) patches can propagate into real workflows.
+<strong>Figure 1</strong> An FCV attack can be initiated through two real-world pathways: deliberately by a malicious contributor, or more subtly, when a benign developer inadvertently incorporates content from a contaminated source. Both pathways result in the same input of developer-style instructions within an issue description, making them indistinguishable from the agent's perspective. This illustrates the core of the FCV threat: functionally correct patches that pass all tests can still embed exploitable vulnerabilities (e.g., CWE-94).
 </i></p>
 
 <!-- ------- -->

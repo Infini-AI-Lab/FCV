@@ -19,15 +19,7 @@ Yibo Peng<sup>1,†</sup>, James Song<sup>2,†</sup>, Lei Li<sup>3,†</sup>, X
 
 <!-- ---------- -->
 **TL;DR**
-Code agents are increasingly trusted to autonomously fix bugs on platforms such as GitHub, yet their security
-evaluation focuses almost exclusively on functional correctness. In this paper, we reveal a novel type of threat to
-realworld codeagents: functionally correct yet vulnerable (FCV) patches, which pass all test cases but contain
-vulnerable code. With our proposed FCVAttack, we demonstrate that SOTA LLMs (e.g., ChatGPT and Claude)
-and agent scaffolds (e.g., SWEagent and OpenHands) are all vulnerable to this FCV threat; across 12 agentmodel
-combinations on SWE-Bench, the attack only requires black-box access and a single query to the code agent to
-perform the attack. For example, for CWE-538 (information exposure vulnerability), the FCV-Attack attains an
-attack success rate of 40.7% on GPT-5 MINI + OPENHANDS. Our results reveal an important security threat
-overlooked by current evaluation paradigms and urge the development of security-aware defenses for code agents
+Code agents are increasingly trusted to autonomously fix bugs on platforms such as GitHub, yet their security evaluation focuses almost exclusively on functional correctness. In this paper, we reveal a novel type of threat to real-world code-agents: Functionally Correct yet Vulnerable (FCV) patches, which pass all test cases but contain vulnerable code. With our proposed FCV-Attack, which can be deliberately crafted by malicious attackers or implicitly introduced by benign developers, we show that SOTA LLMs (e.g., ChatGPT and Claude) and agent scaffolds (e.g., SWE-agent and OpenHands) are all vulnerable to this FCV threat; across 12 agent-model combinations on SWE-Bench, the attack only requires black-box access and a single query to the code agent to perform the attack. For example, for CWE-538 (information exposure vulnerability), the FCV-Attack attains an attack success rate of 40.7% on GPT-5 mini + OpenHands. Our results reveal an important security threat overlooked by current evaluation paradigms and urge the development of security-aware defenses for code agents.
 
 </div>
 

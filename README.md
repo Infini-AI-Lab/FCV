@@ -210,7 +210,7 @@ If you find our work useful, please cite our paper:
 
 We're excited to share our early results and welcome feedback from the community as we continue to refine and expand FCV's capabilities. If you have any questions or feedback, please feel free to contact us:
 
-- **Email**: [contact@example.com](mailto:contact@example.com)
+- **Email**: [yibop@andrew.cmu.edu](yibop@andrerw.cmu.edu)
 - **GitHub Issues**: [Create an issue](https://github.com/Infini-AI-Lab/FCV/issues)
 - **Website**: [https://infini-ai-lab.github.io/FCV/](https://infini-ai-lab.github.io/FCV/)
 

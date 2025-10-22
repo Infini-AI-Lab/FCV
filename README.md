@@ -14,7 +14,7 @@ Yibo Peng<sup>1,†</sup>, James Song<sup>2,†</sup>, Lei Li<sup>3,†</sup>, X
 
 <div align="center">
 [<a href="https://infini-ai-lab.github.io/FCV/">Website</a>]
-[<a href="https://github.com/Infini-AI-Lab/FCV/raw/main/FCV_paper.pdf">Paper</a>]
+[<a href="https://arxiv.org/abs/2510.17862">Paper</a>]
 </div>
 <br>
 

@@ -12,21 +12,6 @@ Code agents are increasingly trusted to autonomously fix bugs on platforms such 
 
 
 
-## 🗞️ News
-
-<!-- ---------- -->
-<p align="center">
-  <img src="docs/static/fcv-images/figure1.png" alt="ASR across Agent/Model/CWE" style="width:100%;"/>
-</p>
-
-<p align="center"><i>
-<strong>Figure 1</strong> An FCV attack can be initiated through two real-world pathways: deliberately by a malicious contributor, or more subtly, when a benign developer inadvertently incorporates content from a contaminated source. Both pathways result in the same input of developer-style instructions within an issue description, making them indistinguishable from the agent's perspective. This illustrates the core of the FCV threat: functionally correct patches that pass all tests can still embed exploitable vulnerabilities (e.g., CWE-94).
-</i></p>
-
-<!-- ------- -->
-
-<!-- The official implementation of M2PO will be released here soon! -->
-
 ## Getting Started
 Much of our experiments reuse prior code by mini-SWE-agent, SWE-agent, and OpenHands, with some additions with the injected CWE prompts. 
 
